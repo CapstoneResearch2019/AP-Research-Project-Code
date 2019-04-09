@@ -12,3 +12,5 @@ public class ArrayLayout
 
     public rowData[] lanes;
 }
+//All variables of this class contain two-dimensional GameObject arrays
+//Class is designed to be displayed in the inspector, cannot be attached to any game objects
