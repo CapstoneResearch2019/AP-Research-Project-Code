@@ -5,21 +5,24 @@ using UnityEngine;
 
 public class MeanCalculator : MonoBehaviour
 {
-    private CarArray carArray;
-    [SerializeField] private float mean = 0;
-    [SerializeField] private float std = 0;
-    [SerializeField] private float[] meanArr;
-    private float[] totalTimeArr;
-    private int[] totalCarsArr;
+    private CarArray carArray; //Reference to CarArray.cs, used for calling functions and variables
+    [SerializeField] private float mean = 0; //Overall average travel time recorded per simulation, initialized as 0
+    [SerializeField] private float std = 0; //Standard deviation of travel times recorded per simulation, initialized as 0
+    [SerializeField] private float[] meanArr; //Array of average travel times separated by intended destination
+    private float[] totalTimeArr; //Input value for finding average travel times separated by intended destination
+    private int[] totalCarsArr; //Input value for finding average travel times separated by intended destination
 
+    //Start function is called at the beginning of a program run 
     void Start()
     {
+        //Initialization
         carArray = GameObject.Find("Manager").GetComponent<CarArray>();
         meanArr = new float[carArray.destNum];
         totalTimeArr = new float[carArray.destNum];
         totalCarsArr = new int[carArray.destNum];
     }
-
+    
+    //Calculates individual mean travel times in meanArr[] based on updates in Pathfinder.cs
     public void SetMean(float t, GameObject dest)
     {
         int x = 0;
@@ -36,9 +39,10 @@ public class MeanCalculator : MonoBehaviour
         totalCarsArr[x] += 1;
         meanArr[x] = totalTimeArr[x] / ((float)totalCarsArr[x]);
 
-        FindTotalMean();
+        FindTotalMean(); //Function call
     }
 
+    //Calculates value for mean
     void FindTotalMean()
     {
         mean = 0;
@@ -52,9 +56,10 @@ public class MeanCalculator : MonoBehaviour
             }
         }
         mean /= x;
-        FindStandardDeviation();
+        FindStandardDeviation(); //Function call
     }
-
+    
+    //Calculates standard deviation for meanArr[] data set
     void FindStandardDeviation()
     {
         float variance = 0;
@@ -66,3 +71,5 @@ public class MeanCalculator : MonoBehaviour
         std = (float)Math.Sqrt(variance);
     }
 }
+//View this script during simulations to gather data
+//*ATTACH TO MANAGER OBJECT*
