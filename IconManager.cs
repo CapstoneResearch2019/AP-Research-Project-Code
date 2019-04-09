@@ -5,6 +5,7 @@ using UnityEditor;
 #endif
 using UnityEngine;
 
+//Class used for management of UI icons, cannot be assigned to objects in the inspector
 //Credit to Christiaan Bloemendaal (Thundernerd) on github.io for IconManager script
 
 public class IconManager 
