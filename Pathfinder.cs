@@ -4,24 +4,26 @@ using UnityEngine;
 
 public class Pathfinder : MonoBehaviour
 {
-    [HideInInspector] public PointNetwork pointNetwork;
-    [HideInInspector] public bool mergingLeft;
-    [HideInInspector] public bool mergingRight;
-    [HideInInspector] public bool merging;
-    [HideInInspector] public float mySpeed;
-    public GameObject current;
+    [HideInInspector] public PointNetwork pointNetwork; //Reference to PointNetwork.cs
+    [HideInInspector] public bool mergingLeft; //Determines merging state of car
+    [HideInInspector] public bool mergingRight; //Determines merging state of car
+    [HideInInspector] public bool merging; //Determines merging state of car
+    [HideInInspector] public float mySpeed; //Determines speed of car
+    public GameObject current; //Identifies the last PointNetwork object car has passed through
 
-    [SerializeField] private GameObject nextPos;
-    private bool enterMerge;
-    private Timer globalTimer;
-    private float privateTimer;
-    private float mergeTimer;
-    private SpeedSearch spd;
-    private CarArray carArray;
-    private MeanCalculator record;
-
+    [SerializeField] private GameObject nextPos; //Identifies the PointNetwork object car is moving towards
+    private bool enterMerge; //Determines merging state of car
+    private Timer globalTimer; //Records time from the beginning of the program
+    private float privateTimer; //Records time from the initialization of car object running this script
+    private float mergeTimer; //Records time from the start of a merge
+    private SpeedSearch spd; //Reference to SpeedSearch.cs
+    private CarArray carArray; //Reference to CarArray.cs
+    private MeanCalculator record; //Reference to MeanCalculator.cs
+    
+    //Start function is called at the beginning of a program run
     void Start()
     {
+        //Initialization
         gameObject.name = "Car";
         merging = false;
         spd = gameObject.GetComponent<SpeedSearch>();
@@ -32,7 +34,8 @@ public class Pathfinder : MonoBehaviour
         record = GameObject.Find("Manager").GetComponent<MeanCalculator>();
         carArray = GameObject.Find("Manager").GetComponent<CarArray>();
     }
-
+    
+    //Update function is called once before every frame of animation
     void Update()
     {
         if (!pointNetwork.stopSpace) mySpeed = spd.mySpeed;
@@ -108,11 +111,11 @@ public class Pathfinder : MonoBehaviour
             mergingRight = false;
             if (pointNetwork.leftMerge != null && spd.SafeToMergeL() && spd.WantToMergeL())
             {
-                MergeLeft();
+                MergeLeft(); //Function call
             }
             if (pointNetwork.rightMerge != null && spd.SafeToMergeR() && spd.WantToMergeR())
             {
-                MergeRight();
+                MergeRight(); //Function call
             }
 
             if (transform.position != nextPos.transform.position)
@@ -173,6 +176,7 @@ public class Pathfinder : MonoBehaviour
         }
     }
 
+    //Checks if car is facing towards a given object
     public bool IsInLineWith(GameObject target)
     {
         Vector3 between = (target.transform.position - transform.position).normalized;
@@ -188,7 +192,8 @@ public class Pathfinder : MonoBehaviour
             return false;
         }
     }
-
+    
+    //Checks if car has passed a given object
     public bool IsInFrontOf(GameObject target)
     {
         Vector3 between = (target.transform.position - transform.position).normalized;
@@ -205,6 +210,7 @@ public class Pathfinder : MonoBehaviour
         }
     }
 
+    //Sets variables to allow the car to merge to the left
     public void MergeLeft()
     {
         if (!merging)
@@ -218,6 +224,7 @@ public class Pathfinder : MonoBehaviour
         else return;
     }
 
+    //Sets variables to allow the car to merge to the right
     public void MergeRight()
     {
         if (!merging)
@@ -231,3 +238,5 @@ public class Pathfinder : MonoBehaviour
         else return;
     }
 }
+//Script determines the behavior of car movement
+//*ATTACH TO EACH CAR OBJECT VARIATION*
