@@ -23,15 +23,17 @@ public class PointNetwork : MonoBehaviour
         destSize = possibleDestArray.Length;
     }
 
-    //Update function is called before each frame
+    //Update function is called once before every frame of animation
     void Update()
     {
-        if (stopSpace == false) IconManager.SetIcon(gameObject, IconManager.Icon.DiamondGray);
-        else IconManager.SetIcon(gameObject, IconManager.Icon.DiamondRed);
+        if (stopSpace == false) IconManager.SetIcon(gameObject, IconManager.Icon.DiamondGray); //Grey icon for points
+        else IconManager.SetIcon(gameObject, IconManager.Icon.DiamondRed); //Red icon for stoplights
     }
 
+    //OnDrawGizmos function is used in the inspector and not called during the inspector
     void OnDrawGizmos()
     {
+        //Debug lines drawn between current and nextPos/altPos
         if (nextPos != null)
         {
             Gizmos.DrawLine(transform.position, nextPos.transform.position);
