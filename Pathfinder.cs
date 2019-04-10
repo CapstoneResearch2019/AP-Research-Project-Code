@@ -38,33 +38,39 @@ public class Pathfinder : MonoBehaviour
     //Update function is called once before every frame of animation
     void Update()
     {
-        if (!pointNetwork.stopSpace) mySpeed = spd.mySpeed;
-        privateTimer += Time.deltaTime;
-        if (pointNetwork.nextPos == null && pointNetwork.leftMerge == null && pointNetwork.rightMerge == null && pointNetwork.altNextPos == null)
+        if (!pointNetwork.stopSpace) mySpeed = spd.mySpeed; //Speed set by SpeedSearch procedures
+        privateTimer += Time.deltaTime; //Records time between car spawn and deletion
+  
+        if (pointNetwork.nextPos == null && pointNetwork.leftMerge == null
+        && pointNetwork.rightMerge == null && pointNetwork.altNextPos == null) //Car deleted when it has no path to follow
         {
-            //Debug.Log(privateTimer);
-            record.SetMean(privateTimer, current);
+            record.SetMean(privateTimer, current); //Sends timer variable to MeanCalculator.cs
             Destroy(gameObject);
         }
+        //Car always moves forward when in scene, only stops at stoplights
         if (!pointNetwork.stopSpace) transform.position += transform.forward * Time.deltaTime * mySpeed;
         else mySpeed = 0;
 
+        //Merging state
         if (merging)
         {
+            //Car is deleted if in merging state for too long
             mergeTimer += Time.deltaTime;
             if (mergeTimer > 2.0f) Destroy(gameObject);
 
+            //Merge left
             if (mergingLeft)
             {
+                //Only true at the beginning of a merge, used for preliminary setup
                 if (enterMerge == true)
                 {
-                    if (pointNetwork.leftMerge == null) merging = false;
+                    if (pointNetwork.leftMerge == null) merging = false; //Deactivates merging state if there is no path to merge to
                     else nextPos = pointNetwork.leftMerge;
                     enterMerge = false;
                 }
                 else if (IsInLineWith(nextPos))
                 {
-                    merging = false;
+                    merging = false; //Deactivates merging state
                 }
                 else if (transform.position != nextPos.transform.position)
                 {
@@ -79,6 +85,7 @@ public class Pathfinder : MonoBehaviour
                 else merging = false;
             }
 
+            //Merge right
             if (mergingRight)
             {
                 if (enterMerge == true)
@@ -105,17 +112,20 @@ public class Pathfinder : MonoBehaviour
             }
         }
 
+        //Non-merging state
         else if (!merging)
         {
+            //Prevents car from merging
             mergingLeft = false;
             mergingRight = false;
-            if (pointNetwork.leftMerge != null && spd.SafeToMergeL() && spd.WantToMergeL())
+            
+            if (pointNetwork.leftMerge != null && spd.SafeToMergeL() && spd.WantToMergeL()) //Merging conditions
             {
-                MergeLeft(); //Function call
+                MergeLeft(); //Function call, activates merging state
             }
-            if (pointNetwork.rightMerge != null && spd.SafeToMergeR() && spd.WantToMergeR())
+            if (pointNetwork.rightMerge != null && spd.SafeToMergeR() && spd.WantToMergeR()) //Merging conditions
             {
-                MergeRight(); //Function call
+                MergeRight(); //Function call, activates merging state
             }
 
             if (transform.position != nextPos.transform.position)
