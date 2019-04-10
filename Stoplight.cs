@@ -4,18 +4,20 @@ using UnityEngine;
 
 public class Stoplight : MonoBehaviour
 {
-    public float changeStartTime;
-    public float changeRate;
-    public ArrayLayout arrLayout;
+    public float changeStartTime; //Determines when stoplight cycle begins
+    public float changeRate; //Determines how fast stoplights change
+    public ArrayLayout arrLayout; //Two-dimensional array to store arrays of stoplight points
 
-    private GameObject[] cycles;
-    private int select = 0;
+    private GameObject[] cycles; //Stores red stoplights
+    private int select = 0; //Determines which array inside arrLayout is stopped at any given time
 
+    //Start function is called at the beginning of a program run
     void Start()
     {
-        InvokeRepeating("Change", changeStartTime, changeRate);
+        InvokeRepeating("Change", changeStartTime, changeRate); //Repeats Change function at a set start time and rate
     }
 
+    //Cycles through GameObject arrays in arrLayout, 
     public void Change()
     {
         cycles = arrLayout.lanes[select].lane; 
