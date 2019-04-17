@@ -17,15 +17,16 @@ public class Stoplight : MonoBehaviour
         InvokeRepeating("Change", changeStartTime, changeRate); //Repeats Change function at a set start time and rate
     }
 
-    //Cycles through GameObject arrays in arrLayout, 
+    //Cycles through GameObject arrays in arrLayout to add stopSpace property from PointNetwork.cs to all elements of one array
     public void Change()
     {
-        cycles = arrLayout.lanes[select].lane; 
+        cycles = arrLayout.lanes[select].lane; //Selects an array
 
         for (int i = 0; i < arrLayout.lanes.Length; i++)
         {
             for (int j = 0; j < arrLayout.lanes[i].lane.Length; j++)
             {
+                //All points are reset to default state
                 GameObject point = arrLayout.lanes[i].lane[j];
                 PointNetwork intersection = point.GetComponent<PointNetwork>();
                 intersection.stopSpace = false;
@@ -37,6 +38,7 @@ public class Stoplight : MonoBehaviour
             {
                 for (int j = 0; j < cycles.Length; j++)
                 {
+                    //Points in selected array given stopSpace property
                     GameObject point = cycles[j];
                     PointNetwork intersection = point.GetComponent<PointNetwork>();
                     intersection.stopSpace = true;
@@ -44,6 +46,7 @@ public class Stoplight : MonoBehaviour
             }
         }
         
+        //Changes selected array to the next available array in a loop
         if (select < arrLayout.lanes.Length - 1) select += 1;
         else select = 0;
     }
