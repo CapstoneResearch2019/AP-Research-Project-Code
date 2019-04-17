@@ -13,3 +13,5 @@ public class Timer : MonoBehaviour
         intSpawnTimer = (int)Time.deltaTime;
     }
 }
+//Script records time in both integer and decimal values
+//*ATTACH SCRIPT TO MANAGER OBJECT*
