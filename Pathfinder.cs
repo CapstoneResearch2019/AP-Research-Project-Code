@@ -128,6 +128,7 @@ public class Pathfinder : MonoBehaviour
                 MergeRight(); //Function call, activates merging state
             }
 
+            //Car faces towards nextPos object while moving forward
             if (transform.position != nextPos.transform.position)
             {
                 if (IsInFrontOf(nextPos))
@@ -135,6 +136,8 @@ public class Pathfinder : MonoBehaviour
                     pointNetwork = nextPos.GetComponent<PointNetwork>();
                     current = pointNetwork.current;
                     nextPos = pointNetwork.nextPos;
+                    
+                    //If an alternate path exists, car may move on the alternate path instead
                     if (pointNetwork.altNextPos != null)
                     {
                         int x = 0;
@@ -157,6 +160,8 @@ public class Pathfinder : MonoBehaviour
                 }
                 transform.LookAt(nextPos.transform.position);
             }
+            
+            //After nextPos is reached, car looks for a new next position
             else
             {
                 pointNetwork = nextPos.GetComponent<PointNetwork>();
@@ -249,4 +254,4 @@ public class Pathfinder : MonoBehaviour
     }
 }
 //Script determines the behavior of car movement
-//*ATTACH TO EACH CAR OBJECT VARIATION*
+//*ATTACH TO EACH CAR OBJECT PREFAB*
