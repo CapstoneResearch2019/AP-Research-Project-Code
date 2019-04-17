@@ -23,6 +23,7 @@ public class TimedSpawn : MonoBehaviour
     private Timer timer;
     private MeanCalculator record;
 
+    //Awake function is called just before the beginning of a program run
     private void Awake()
     {
         stopSpawning = false;
@@ -32,11 +33,13 @@ public class TimedSpawn : MonoBehaviour
         timer = GameObject.Find("Manager").GetComponent<Timer>();
     }
 
+    //Start function is called at the beginning of a program run
     void Start()
     {
         InvokeRepeating("SpawnObject", (spawnStartTime + Random.Range(-1.0f, 1.0f)), (spawnRate + Random.Range(-1.0f, 1.0f)));
     }
 
+    //Update function is called once before each frame of animation
     void Update()
     {
         if (timer.spawnTimer >= (spawnLimit + spawnStartTime)) stopSpawning = true;
