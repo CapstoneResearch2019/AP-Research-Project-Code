@@ -206,3 +206,5 @@ public class SpeedSearch : MonoBehaviour
         return false;
     }
 }
+//Script defines how cars interact with each other and controls their speeds
+//*ATTACH TO EACH CAR OBJECT PREFAB*
